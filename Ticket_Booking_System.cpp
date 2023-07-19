@@ -1,15 +1,19 @@
-#include <iostream>
-#include <fstream>
-#include <string>
+#include <bits/stdc++.h>
 
 using namespace std;
-
 const int MAX_MOVIES = 10;
+int movieCount = 0;
+
 const string FILENAME = "movies.txt";
 
 class Movie
 {
 private:
+    int Seats;
+    string ID;
+    time_t now = time(0);
+    string dt = ctime(&now);
+
     string title;
     string description;
     string timings;
@@ -19,7 +23,7 @@ private:
 public:
     Movie() {}
 
-    Movie(const string &movieTitle, const string &movieDescription, const string &movieTimings, double moviePrice, int seatsAvailable)
+    Movie(string &movieTitle, string &movieDescription, string &movieTimings, double moviePrice, int seatsAvailable)
     {
         title = movieTitle;
         description = movieDescription;
@@ -53,24 +57,75 @@ public:
         return availableSeats;
     }
 
-    void bookTicket()
+    void setData()
     {
-        if (availableSeats > 0)
+        cin.ignore();
+        cout << "Enter CNIC Number without Dashes               : ";
+        cin >> ID;
+
+        ifstream input("Data.txt");
+        string find;
+        if (input.is_open())
         {
-            availableSeats--;
-            cout << "Ticket booked successfully!" << endl;
+            while (getline(input, find))
+            {
+                if (find.length() > 0)
+                {
+                    if (find == ID)
+                    {
+                        cout << "Already Booked a ticket in this CNIC Please use another CNIC" << endl;
+                        setData();
+                    }
+                }
+            }
+
+            input.close();
+        }
+
+        ofstream file("Data.txt", ios::app);
+        if (file.is_open())
+        {
+            file << ID << endl;
+            file << title << endl;
+            file << price << endl;
+            file << Seats << endl;
+            file << timings << endl;
+            file << dt << endl;
+            file.close();
         }
         else
         {
-            cout << "Sorry, no seats available for this movie." << endl;
+            cout << "Error opening file. Movie data not saved." << endl;
         }
     }
 
-    // Function to save movie data to a file
-    void saveToFile(ofstream &file) const
-    // void saveToFile()
+    void bookTicket()
     {
-        // ofstream file("movies.txt");
+        if (availableSeats == 0)
+        {
+            cout << "Sorry, no seats available for this movie." << endl;
+            return;
+        }
+
+        cout << "Enter Numbers of Seats you want to booked      : ";
+        cin >> Seats;
+        if (availableSeats >= Seats)
+        {
+            setData();
+            availableSeats -= Seats;
+            cout << "   Ticket booked successfully!" << endl;
+        }
+        else
+        {
+            cout << "\t\t\t\t\t\t\tOnly " << availableSeats << " Seats are left" << endl;
+            bookTicket();
+        }
+    }
+
+    void saveToFile(ofstream &file) const
+
+    {
+
         file << title << endl;
         file << description << endl;
         file << timings << endl;
@@ -78,7 +133,6 @@ public:
         file << availableSeats << endl;
     }
 
-    // Function to load movie data from a file
     void loadFromFile(ifstream &file)
     {
         getline(file, title);
@@ -94,7 +148,6 @@ class MovieTicketBookingSystem
 {
 private:
     Movie movies[MAX_MOVIES];
-    int movieCount;
 
 public:
     MovieTicketBookingSystem()
@@ -102,14 +155,14 @@ public:
         loadMoviesFromFile();
     }
 
-    void addMovie(string &title, const string &description, const string &timings, double &price, int &availableSeats)
+    void addMovie(string &title, string &description, string &timings, double &price, int &availableSeats)
     {
         if (movieCount < MAX_MOVIES)
         {
             Movie movie(title, description, timings, price, availableSeats);
             movies[movieCount++] = movie;
             cout << "Movie added successfully!" << endl;
-            saveMoviesToFile(); // Save movie data to file after adding a new movie
+            saveMoviesToFile();
         }
         else
         {
@@ -129,7 +182,7 @@ public:
                 }
                 movieCount--;
                 cout << "Movie deleted successfully!" << endl;
-                saveMoviesToFile(); // Save movie data to file after deleting a movie
+                saveMoviesToFile();
                 return;
             }
         }
@@ -138,15 +191,26 @@ public:
 
     void showMovieList() const
     {
-        cout << "Movie List:" << endl;
+        if (movieCount == 0)
+        {
+            cout << "No movie available\n";
+            return;
+        }
+
+        cout << "Movie List:\n\n";
         for (int i = 0; i < movieCount; ++i)
         {
-            cout << "Title: " << movies[i].getTitle() << endl;
-            cout << "Description: " << movies[i].getDescription() << endl;
-            cout << "Timings: " << movies[i].getTimings() << endl;
-            cout << "Price: $" << movies[i].getPrice() << endl;
-            cout << "Available Seats: " << movies[i].getAvailableSeats() << endl;
-            cout << "-----------------------" << endl;
+            if (movies[i].getAvailableSeats() == 0)
+            {
+                continue;
+            }
+
+            cout << "      Title                 : " << movies[i].getTitle() << endl;
+            cout << "      Description           : " << movies[i].getDescription() << endl;
+            cout << "      Timings               : " << movies[i].getTimings() << endl;
+            cout << "      Price                 : $" << movies[i].getPrice() << endl;
+            cout << "      Available Seats       : " << movies[i].getAvailableSeats() << endl;
+            cout << "             -----------------------\n\n";
         }
     }
 
@@ -157,17 +221,16 @@ public:
             if (movies[i].getTitle() == title)
             {
                 movies[i].bookTicket();
-                saveMoviesToFile(); // Save movie data to file after booking a ticket
+                saveMoviesToFile();
                 return;
             }
         }
         cout << "Movie not found!" << endl;
     }
 
-    // Function to load movie data from the file
     void loadMoviesFromFile()
     {
-        // const string FILENAME = ;
+
         ifstream file("movies.txt");
         if (file.is_open())
         {
@@ -188,7 +251,6 @@ public:
         }
     }
 
-    // Function to save movie data to the file
     void saveMoviesToFile() const
     {
         ofstream file("movies.txt");
@@ -207,42 +269,91 @@ public:
         }
     }
 
-    void viewBookings() const
+    void viewBookings()
     {
-        // Implementation for viewing bookings
-        cout << "View your Bookings" << endl;
+        string ID, tital, price, movie_time, booking_time, seats;
+        bool flag = false;
+        ifstream input("Data.txt");
+        string find;
+
+        cout << "\n\t    Enter your CNIC Number: ";
+        cin >> ID;
+
+        if (input.is_open())
+        {
+
+            while (getline(input, find))
+            {
+
+                if (find.length() > 0)
+                {
+                    if (find == ID)
+                    {
+                        getline(input, tital);
+                        getline(input, price);
+                        getline(input, seats);
+                        getline(input, movie_time);
+                        getline(input, booking_time);
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+            input.close();
+        }
+        if (flag)
+        {
+            cout << "\n          MOVIE TICKET" << endl;
+            cout << "    Movie Name      : " << tital << endl;
+            cout << "    No of Seats     : " << seats << endl;
+            cout << "    Price           : " << price << " USD" << endl;
+            cout << "    Movie Timing    : " << movie_time << endl;
+            cout << "    Issue Date      : " << booking_time << endl;
+        }
+        else
+        {
+            cout << "No Booking in this CNIC ";
+        }
     }
 
     void showMovieTimings() const
     {
-        // Implementation for showing movie timings
-        cout << "Movie Timings" << endl;
+
+        cout << "\n\t\tMovies Timing\n"
+             << endl;
+        for (int i = 0; i < movieCount; ++i)
+        {
+            cout << "\tMovie         : " << movies[i].getTitle() << endl;
+            cout << "\tMovie Time    : " << movies[i].getTimings() << endl;
+            cout << "\t-----------------------" << endl;
+        }
     }
 
     void showTicketPrice() const
     {
-        // Implementation for showing ticket prices
-        cout << "Price for Tickets" << endl;
+        cout << "\n\t\tMovies Price\n"
+             << endl;
+        for (int i = 0; i < movieCount; ++i)
+        {
+            cout << "\tMovie         : " << movies[i].getTitle() << endl;
+            cout << "\tMovie Price   : " << movies[i].getPrice() << endl;
+            cout << "\t-----------------------" << endl;
+        }
     }
 
     void checkAvailableSeats() const
     {
         cout << "Check Available Seats" << endl;
-        // Implementation for checking available seats
 
-        cout << "Available Seats:" << endl;
+        cout << "\n\t\tAvailable Seats\n"
+             << endl;
         for (int i = 0; i < movieCount; ++i)
         {
-            cout << "Movie: " << movies[i].getTitle() << endl;
-            cout << "Available Seats: " << movies[i].getAvailableSeats() << endl;
-            cout << "-----------------------" << endl;
+            cout << "\tMovie             : " << movies[i].getTitle() << endl;
+            cout << "\tAvailable Seats   : " << movies[i].getAvailableSeats() << endl;
+            cout << "\t-----------------------" << endl;
         }
-    }
-
-    void getMembership()
-    {
-        // Implementation for getting a membership
-        cout << "Get a Membership" << endl;
     }
 };
 
@@ -253,17 +364,16 @@ int main()
 
     do
     {
-        cout << "---------- Movie Ticket Booking System ----------" << endl;
-        cout << "1. Book a Ticket" << endl;
-        cout << "2. View your Bookings" << endl;
-        cout << "3. Movie Timings" << endl;
-        cout << "4. Price for Tickets" << endl;
-        cout << "5. Check Available Seats" << endl;
-        cout << "6. Add a New Movie" << endl;
-        cout << "7. Delete a Movie" << endl;
-        cout << "8. Show Movies List" << endl;
-        cout << "9. Get a Membership" << endl;
-        cout << "10. Exit" << endl;
+        cout << "\n\n         ---------- Movie Ticket Booking System ----------\n\n";
+        cout << "             1. Book a Ticket" << endl;
+        cout << "             2. View your Bookings" << endl;
+        cout << "             3. Movie Timings" << endl;
+        cout << "             4. Price for Tickets" << endl;
+        cout << "             5. Check Available Seats" << endl;
+        cout << "             6. Add a New Movie" << endl;
+        cout << "             7. Delete a Movie" << endl;
+        cout << "             8. Show Movies List" << endl;
+        cout << "             9. Exit\n\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -271,11 +381,18 @@ int main()
         {
         case 1:
         {
-            cout << "Select a movie to book a ticket:" << endl;
+            if (movieCount == 0)
+            {
+
+                cout << "\n\t\tNo movie available\n";
+                continue;
+            }
+
+            cout << "\n          Select a movie to book a ticket:" << endl;
             bookingSystem.showMovieList();
 
             string movieTitle;
-            cout << "Enter the movie title: ";
+            cout << "Enter the movie title                          : ";
             cin.ignore();
             getline(cin, movieTitle);
 
@@ -308,20 +425,20 @@ int main()
             double price;
             int availableSeats;
 
-            cout << "Enter the movie title: ";
+            cout << "\n\t\tEnter the movie title         : ";
             cin.ignore();
             getline(cin, title);
 
-            cout << "Enter the movie description: ";
+            cout << "\t\tEnter the movie description   : ";
             getline(cin, description);
 
-            cout << "Enter the movie timings: ";
+            cout << "\t\tEnter the movie timings       : ";
             getline(cin, timings);
 
-            cout << "Enter the ticket price: ";
+            cout << "\t\tEnter the ticket price        : ";
             cin >> price;
 
-            cout << "Enter the available seats: ";
+            cout << "\t\tEnter the available seats     : ";
             cin >> availableSeats;
 
             bookingSystem.addMovie(title, description, timings, price, availableSeats);
@@ -330,7 +447,7 @@ int main()
         case 7:
         {
             string title;
-            cout << "Enter the movie title to delete: ";
+            cout << "\n\t\tEnter the movie title to delete: ";
             cin.ignore();
             getline(cin, title);
             bookingSystem.deleteMovie(title);
@@ -342,11 +459,6 @@ int main()
             break;
         }
         case 9:
-        {
-            bookingSystem.getMembership();
-            break;
-        }
-        case 10:
         {
             cout << "Exiting the program. Thank you for using the Movie Ticket Booking System!" << endl;
             break;
