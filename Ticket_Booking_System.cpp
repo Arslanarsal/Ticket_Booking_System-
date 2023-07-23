@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-const int MAX_MOVIES = 10;
-int movieCount = 0;
 
+const int MAX_MOVIES = 10;
 const string FILENAME = "movies.txt";
 
 class Movie
@@ -148,6 +146,7 @@ class MovieTicketBookingSystem
 {
 private:
     Movie movies[MAX_MOVIES];
+    int movieCount = 0;
 
 public:
     MovieTicketBookingSystem()
@@ -359,35 +358,108 @@ public:
 
 int main()
 {
+    system("cls");
     MovieTicketBookingSystem bookingSystem;
-    int choice;
+    int choice, num;
 
+    cout << "\n\n				-------------------------------------------------------------" << endl;
+    cout << "				|                                                           |" << endl;
+    cout << "				|          Welcome To Movie Ticket Booking System           |" << endl;
+    cout << "				|                                                           |" << endl;
+    cout << "				-------------------------------------------------------------"
+         << "\n\n\n";
+
+    cout << "\n\n             1. Login as a admin" << endl;
+    cout << "             0. Login as a Customer" << endl;
+    cout << "\n             Enter your choice: ";
+    cin >> num;
+    system("cls");
+    if (num)
+    {
+        do
+        {
+
+            cout << " \n\n             1. Add a New Movie" << endl;
+            cout << "             2. Delete a Movie" << endl;
+            cout << "             3. View Your Movies List" << endl;
+            cout << "             4. Exit\n\n";
+            cout << "Enter your choice: ";
+            cin >> choice;
+            system("cls");
+
+            switch (choice)
+            {
+
+            case 1:
+            {
+                string title, description, timings;
+                double price;
+                int availableSeats;
+
+                cout << "\n\t\tEnter the movie title         : ";
+                cin.ignore();
+                getline(cin, title);
+
+                cout << "\t\tEnter the movie description   : ";
+                getline(cin, description);
+
+                cout << "\t\tEnter the movie timings       : ";
+                getline(cin, timings);
+
+                cout << "\t\tEnter the ticket price        : ";
+                cin >> price;
+
+                cout << "\t\tEnter the available seats     : ";
+                cin >> availableSeats;
+
+                bookingSystem.addMovie(title, description, timings, price, availableSeats);
+                break;
+            }
+            case 2:
+            {
+                string title;
+                cout << "\n\t\tEnter the movie title to delete: ";
+                cin.ignore();
+                getline(cin, title);
+                bookingSystem.deleteMovie(title);
+                break;
+            }
+            case 3:
+            {
+                bookingSystem.showMovieList();
+                break;
+            }
+            case 4:
+            {
+                cout << "Exiting the program. Thank you for using the Movie Ticket Booking System!" << endl;
+                main();
+                break;
+            }
+            default:
+            {
+                cout << "Invalid choice. Please enter a valid option." << endl;
+                break;
+            }
+            }
+        } while (true);
+    }
     do
     {
-        cout << "\n\n         ---------- Movie Ticket Booking System ----------\n\n";
-        cout << "             1. Book a Ticket" << endl;
+        cout << "\n\n             1. Book a Ticket" << endl;
         cout << "             2. View your Bookings" << endl;
         cout << "             3. Movie Timings" << endl;
         cout << "             4. Price for Tickets" << endl;
         cout << "             5. Check Available Seats" << endl;
-        cout << "             6. Add a New Movie" << endl;
-        cout << "             7. Delete a Movie" << endl;
-        cout << "             8. Show Movies List" << endl;
-        cout << "             9. Exit\n\n";
+        cout << "             6. Show Movies List" << endl;
+        cout << "             7. Exit\n\n";
         cout << "Enter your choice: ";
         cin >> choice;
+        system("cls");
 
         switch (choice)
         {
         case 1:
         {
-            if (movieCount == 0)
-            {
-
-                cout << "\n\t\tNo movie available\n";
-                continue;
-            }
-
             cout << "\n          Select a movie to book a ticket:" << endl;
             bookingSystem.showMovieList();
 
@@ -419,48 +491,16 @@ int main()
             bookingSystem.checkAvailableSeats();
             break;
         }
+
         case 6:
-        {
-            string title, description, timings;
-            double price;
-            int availableSeats;
-
-            cout << "\n\t\tEnter the movie title         : ";
-            cin.ignore();
-            getline(cin, title);
-
-            cout << "\t\tEnter the movie description   : ";
-            getline(cin, description);
-
-            cout << "\t\tEnter the movie timings       : ";
-            getline(cin, timings);
-
-            cout << "\t\tEnter the ticket price        : ";
-            cin >> price;
-
-            cout << "\t\tEnter the available seats     : ";
-            cin >> availableSeats;
-
-            bookingSystem.addMovie(title, description, timings, price, availableSeats);
-            break;
-        }
-        case 7:
-        {
-            string title;
-            cout << "\n\t\tEnter the movie title to delete: ";
-            cin.ignore();
-            getline(cin, title);
-            bookingSystem.deleteMovie(title);
-            break;
-        }
-        case 8:
         {
             bookingSystem.showMovieList();
             break;
         }
-        case 9:
+        case 7:
         {
             cout << "Exiting the program. Thank you for using the Movie Ticket Booking System!" << endl;
+            main();
             break;
         }
         default:
@@ -469,8 +509,6 @@ int main()
             break;
         }
         }
-
-    } while (choice != 10);
-
+    } while (true);
     return 0;
 }
