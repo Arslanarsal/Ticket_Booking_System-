@@ -16,7 +16,7 @@ private:
     string description;
     string timings;
     double price;
-    int availableSeats;
+    int availableSeats;//add
 
 public:
     Movie() {}
