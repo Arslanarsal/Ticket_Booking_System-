@@ -4,9 +4,38 @@
 #include <fstream>
 #include <ctime>
 #include <iomanip>
+#include <conio.h>
 class MovieTicketBookingSystem;
-using namespace std;
 
+using namespace std;
+class Utility
+{
+public:
+    static string getCnic()
+    {
+        char ch[14];
+        char temp;
+        int i = 0;
+        while (i < 13)
+        {
+            temp = getch();
+            if (temp >= '0' && temp <= '9')
+            {
+                cout << temp;
+                ch[i] = temp;
+                i++;
+            }
+            else if (temp == '\b' && i > 0)
+            {
+                cout << "\b \b";
+                i--;
+            }
+        }
+        ch[i] = '\0';
+        string str = ch;
+        return str;
+    }
+};
 const int MAX_MOVIES = 10;
 const string FILENAME = "movies.txt";
 
@@ -507,7 +536,7 @@ int main()
     {
         // Customer Section
         cout << "\n\n             Enter your CNIC Number: ";
-        cin >> customerID;
+        customerID = Utility::getCnic();
         system("cls");
 
         do
@@ -590,3 +619,32 @@ int main()
 
     return 0;
 }
+
+// class Utility
+// {
+// public:
+//     static string getCnic()
+//     {
+//         char ch[14];
+//         char temp;
+//         int i = 0;
+//         while (i < 13)
+//         {
+//             temp = getch();
+//             if (temp >= '0' && temp <= '9')
+//             {
+//                 cout << temp;
+//                 ch[i] = temp;
+//                 i++;
+//             }
+//             else if (temp == '\b')
+//             {
+//                 cout << "\b \b";
+//                 i--;
+//             }
+//         }
+//         ch[i] = '\0';
+//         string str = ch;
+//         return str;
+//     }
+// };
