@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <ctime>
-#include <iomanip>
-class MovieTicketBookingSystem;
+
+// class MovieTicketBookingSystem;
 using namespace std;
 
 const int MAX_MOVIES = 10;
@@ -586,6 +582,9 @@ int main()
             }
             }
         } while (true);
+
+
+        
     }
 
     return 0;
