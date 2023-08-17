@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 #include <conio.h>
 
-
 using namespace std;
 class Utility
 {
@@ -30,9 +29,210 @@ public:
         string str = ch;
         return str;
     }
+
+    static string checkChar()
+    {
+        char ch[100];
+        char temp;
+        int i = 0;
+        while (i < 100)
+        {
+            temp = getch();
+            if (temp >= 'a' && temp <= 'z' || temp >= 'A' && temp <= 'Z' || temp == ' ')
+            {
+                cout << temp;
+                ch[i] = temp;
+                i++;
+            }
+            else if (temp == '\r')
+            {
+                break;
+            }
+
+            else if (temp == '\b' && i > 0)
+            {
+                cout << "\b \b";
+                i--;
+            }
+        }
+        ch[i] = '\0';
+        string str = ch;
+        return str;
+    }
+
+    static double getprice()
+    {
+        char ch[14];
+        char temp;
+        int i = 0;
+        while (i < 13)
+        {
+            temp = getch();
+            if (temp >= '0' && temp <= '9')
+            {
+                cout << temp;
+                ch[i] = temp;
+                i++;
+            }
+            else if (temp == '\r')
+            {
+                break;
+            }
+            else if (temp == '\b' && i > 0)
+            {
+                cout << "\b \b";
+                i--;
+            }
+        }
+        ch[i] = '\0';
+        string str = ch;
+        double ans = 0;
+        for (int i = 0; str[i] != '\0'; i++)
+        {
+            ans = (ans * 10) + (str[i] - '0');
+        }
+
+        return ans;
+    }
+
+    static string getdata()
+    {
+        char ch[10];
+        char temp;
+        int i = 0;
+        while (i < 6)
+        {
+            if (i == 2 || i == 5)
+            {
+                temp = '/';
+                cout << temp;
+                ch[i] = temp;
+                i++;
+                continue;
+            }
+
+            temp = getch();
+
+            if (i == 0)
+            {
+                if (temp >= '0' && temp <= '3')
+                {
+                    cout << temp;
+                    ch[i] = temp;
+                    i++;
+                }
+            }
+
+            else if (i == 1)
+            {
+                if (ch[0] == '3')
+                {
+                    if (temp >= '0' && temp <= '1')
+                    {
+                        cout << temp;
+                        ch[i] = temp;
+                        i++;
+                    }
+                }
+                else if (temp >= '0' && temp <= '9')
+                {
+                    cout << temp;
+                    ch[i] = temp;
+                    i++;
+                }
+            }
+
+            if (i == 3)
+            {
+                if (temp >= '0' && temp <= '1')
+                {
+                    cout << temp;
+                    ch[i] = temp;
+                    i++;
+                }
+            }
+
+            else if (i == 4)
+            {
+                if (ch[3] == '1')
+                {
+                    if (temp >= '0' && temp <= '2')
+                    {
+                        cout << temp;
+                        ch[i] = temp;
+                        i++;
+                    }
+                }
+                else if (temp >= '0' && temp <= '9')
+                {
+                    cout << temp;
+                    ch[i] = temp;
+                    i++;
+                }
+            }
+
+            else if (temp == '\r')
+            {
+                break;
+            }
+            else if (temp == '\b' && i > 0)
+            {
+                cout << "\b \b";
+                i--;
+            }
+        }
+        ch[6] = '2';
+        ch[7] = '0';
+        ch[8] = '2';
+        ch[9] = '3';
+
+        cout << ch[6];
+        cout << ch[7];
+        cout << ch[8];
+        cout << ch[9];
+
+        ch[10] = '\0';
+        string str = ch;
+
+        return str;
+    }
+
+    static int checknum(int n)
+    {
+        char ch[0];
+        char temp;
+        char c = n + '0';
+        while (true)
+        {
+            temp = getch();
+            if (temp >= '0' && temp <= c)
+            {
+                cout << temp;
+                ch[0] = temp;
+                return (ch[0] - '0');
+            }
+        }
+    }
+
+    static char checkYN()
+    {
+        char ch[0];
+        char temp;
+        while (true)
+        {
+            temp = getch();
+            if (temp == 'y' || temp == 'Y' || temp == 'n' || temp == 'N')
+            {
+                cout << temp;
+                ch[0] = temp;
+                return ch[0];
+            }
+        }
+    }
 };
+
 const int MAX_MOVIES = 10;
-const string FILENAME = "movies.txt";
+const string FILENAME = "C:\\Users\\Arslan\\Desktop\\Dev c++\\movies.txt";
 
 class Seats
 {
@@ -79,27 +279,27 @@ public:
 class Movie
 {
 private:
-    string title;
+    string Name;
     string description;
-    string timings;
+    string Time;
     double price;
     Seats seats;
 
 public:
     Movie() {}
 
-    Movie(const string &movieTitle, const string &movieDescription, const string &movieTimings, double moviePrice, int seatsAvailable)
+    Movie(const string &movieName, const string &movieDescription, const string &movieTime, double moviePrice, int seatsAvailable)
     {
-        title = movieTitle;
+        Name = movieName;
         description = movieDescription;
-        timings = movieTimings;
+        Time = movieTime;
         price = moviePrice;
         seats.SetSeats(seatsAvailable);
     }
 
-    string getTitle() const
+    string getName() const
     {
-        return title;
+        return Name;
     }
 
     string getDescription() const
@@ -107,9 +307,9 @@ public:
         return description;
     }
 
-    string getTimings() const
+    string gettime() const
     {
-        return timings;
+        return Time;
     }
 
     double getPrice() const
@@ -124,18 +324,18 @@ public:
 
     void saveToFile(ofstream &file) const
     {
-        file << title << endl;
+        file << Name << endl;
         file << description << endl;
-        file << timings << endl;
+        file << Time << endl;
         file << price << endl;
         file << seats.getAvailableSeats() << endl;
     }
 
     void loadFromFile(ifstream &file)
     {
-        getline(file, title);
+        getline(file, Name);
         getline(file, description);
-        getline(file, timings);
+        getline(file, Time);
         file >> price;
         int seatsAvailable;
         file >> seatsAvailable;
@@ -149,23 +349,21 @@ public:
     }
 };
 
-// Definition of the Seats class
-
 class CustomerData
 {
 private:
     string ID;
-    string movieTitle;
+    string movieName;
     double price;
     int bookedSeats;
     string movieTime;
     string bookingTime;
 
 public:
-    CustomerData(const string &id, const string &title, double ticketPrice, int seats, const string &time, const string &booking)
+    CustomerData(const string &id, const string &Name, double ticketPrice, int seats, const string &time, const string &booking)
     {
         ID = id;
-        movieTitle = title;
+        movieName = Name;
         price = ticketPrice;
         bookedSeats = seats;
         movieTime = time;
@@ -177,9 +375,9 @@ public:
         return ID;
     }
 
-    string getMovieTitle() const
+    string getMovieName() const
     {
-        return movieTitle;
+        return movieName;
     }
 
     double getPrice() const
@@ -203,23 +401,23 @@ public:
     }
 };
 
-class MovieTicketBookingSystem
+class BookingSystem
 {
 private:
     Movie movies[MAX_MOVIES];
     int movieCount = 0;
 
 public:
-    MovieTicketBookingSystem()
+    BookingSystem()
     {
         loadMoviesFromFile();
     }
 
-    void addMovie(const string &title, const string &description, const string &timings, double price, int availableSeats)
+    void addMovie(const string &Name, const string &description, const string &Time, double price, int availableSeats)
     {
         if (movieCount < MAX_MOVIES)
         {
-            Movie movie(title, description, timings, price, availableSeats);
+            Movie movie(Name, description, Time, price, availableSeats);
             movies[movieCount++] = movie;
             cout << "Movie added successfully!" << endl;
             saveMoviesToFile();
@@ -230,23 +428,23 @@ public:
         }
     }
 
-    void deleteMovie(const string &title)
+    void deleteMovie(const string &Name)
     {
         for (int i = 0; i < movieCount; ++i)
         {
-            if (movies[i].getTitle() == title)
+            if (movies[i].getName() == Name)
             {
                 for (int j = i; j < movieCount - 1; ++j)
                 {
                     movies[j] = movies[j + 1];
                 }
                 movieCount--;
-                cout << "Movie deleted successfully!" << endl;
+                cout << "\n\nMovie deleted successfully!" << endl;
                 saveMoviesToFile();
                 return;
             }
         }
-        cout << "Movie not found!" << endl;
+        cout << "\n\nMovie not found!" << endl;
     }
 
     void showMovieList() const
@@ -257,7 +455,7 @@ public:
             return;
         }
 
-        cout << "Movie List:\n\n";
+        cout << "\n\n\t\tMovie List:\n\n";
         for (int i = 0; i < movieCount; ++i)
         {
             if (movies[i].getAvailableSeats() == 0)
@@ -265,57 +463,65 @@ public:
                 continue;
             }
 
-            cout << "      Title                 : " << movies[i].getTitle() << endl;
+            cout << "      Name                  : " << movies[i].getName() << endl;
             cout << "      Description           : " << movies[i].getDescription() << endl;
-            cout << "      Timings               : " << movies[i].getTimings() << endl;
+            cout << "      Time                  : " << movies[i].gettime() << endl;
             cout << "      Price                 : $" << movies[i].getPrice() << endl;
             cout << "      Available Seats       : " << movies[i].getAvailableSeats() << endl;
             cout << "             -----------------------\n\n";
         }
     }
 
-    bool bookTicket(const string &title, int numSeats, const string &customerID)
+    bool bookTicket(const string &Name, int numSeats, const string &customerID)
     {
         for (int i = 0; i < movieCount; ++i)
         {
-            if (movies[i].getTitle() == title)
+            if (movies[i].getName() == Name)
             {
                 if (movies[i].getAvailableSeats() < numSeats)
                 {
-                    cout << "Sorry, only " << movies[i].getAvailableSeats() << " seats are available for this movie." << endl;
+                    cout << "\nSorry, only " << movies[i].getAvailableSeats() << " seats are available for this movie." << endl;
                     return false;
                 }
 
                 string bookingTime = getTimeString();
 
                 movies[i].bookTicket(numSeats);
-                CustomerData customerData(customerID, title, movies[i].getPrice(), numSeats, movies[i].getTimings(), bookingTime);
+                CustomerData customerData(customerID, Name, movies[i].getPrice(), numSeats, movies[i].gettime(), bookingTime);
                 saveCustomerData(customerData);
 
                 saveMoviesToFile();
-                cout << numSeats << " ticket(s) booked successfully!" << endl;
+                // cout << numSeats << " ticket(s) booked successfully!" << endl;
                 return true;
             }
         }
-        cout << "Movie not found!" << endl;
+        cout << "\nMovie not found!" << endl;
         return false;
     }
 
     void viewBookings(const string &customerID)
     {
-        ifstream inputFile("Data.txt");
+        ifstream inputFile("C:\\Users\\Arslan\\Desktop\\Dev c++\\Data.txt");
         if (inputFile.is_open())
         {
-            string id, title, price, seats, movieTime, bookingTime;
+            string id, Name, price, seats, movieTime, bookingTime;
             bool found = false;
 
-            while (inputFile >> id >> title >> price >> seats >> movieTime >> bookingTime)
+            while (!inputFile.eof())
             {
+                getline(inputFile, id);
                 if (id == customerID)
                 {
                     found = true;
-                    cout << "\n          MOVIE TICKET" << endl;
-                    cout << "    Movie Name      : " << title << endl;
+
+                    getline(inputFile, Name);
+                    getline(inputFile, price);
+                    getline(inputFile, seats);
+                    getline(inputFile, movieTime);
+                    getline(inputFile, bookingTime);
+
+                    cout << "\n\n          MOVIE TICKET\n" << endl;
+                    cout << "    Movie Name      : " << Name << endl;
                     cout << "    No of Seats     : " << seats << endl;
                     cout << "    Price           : $" << price << endl;
                     cout << "    Movie Timing    : " << movieTime << endl;
@@ -335,15 +541,15 @@ public:
         }
     }
 
-    void showMovieTimings() const
+    void showMovieTime() const
     {
-        cout << "\n\t\tMovies Timing\n"
+        cout << "\n\t\tMovies Time\n"
              << endl;
         for (int i = 0; i < movieCount; ++i)
         {
-            cout << "\tMovie         : " << movies[i].getTitle() << endl;
-            cout << "\tMovie Time    : " << movies[i].getTimings() << endl;
-            cout << "\t-----------------------" << endl;
+            cout << "\tMovie         : " << movies[i].getName() << endl;
+            cout << "\tMovie Time    : " << movies[i].gettime() << endl;
+            cout << "\t-----------------------\n" << endl;
         }
     }
 
@@ -353,9 +559,9 @@ public:
              << endl;
         for (int i = 0; i < movieCount; ++i)
         {
-            cout << "\tMovie         : " << movies[i].getTitle() << endl;
+            cout << "\tMovie         : " << movies[i].getName() << endl;
             cout << "\tMovie Price   : $" << movies[i].getPrice() << endl;
-            cout << "\t-----------------------" << endl;
+            cout << "\t-----------------------\n" << endl;
         }
     }
 
@@ -367,9 +573,9 @@ public:
              << endl;
         for (int i = 0; i < movieCount; ++i)
         {
-            cout << "\tMovie             : " << movies[i].getTitle() << endl;
+            cout << "\tMovie             : " << movies[i].getName() << endl;
             cout << "\tAvailable Seats   : " << movies[i].getAvailableSeats() << endl;
-            cout << "\t-----------------------" << endl;
+            cout << "\t-----------------------\n" << endl;
         }
     }
 
@@ -415,11 +621,11 @@ public:
 
     void saveCustomerData(const CustomerData &customerData)
     {
-        ofstream file("Data.txt", ios::app);
+        ofstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\Data.txt", ios::app);
         if (file.is_open())
         {
             file << customerData.getID() << endl;
-            file << customerData.getMovieTitle() << endl;
+            file << customerData.getMovieName() << endl;
             file << fixed << setprecision(2) << customerData.getPrice() << endl;
             file << customerData.getBookedSeats() << endl;
             file << customerData.getMovieTime() << endl;
@@ -440,10 +646,60 @@ public:
     }
 };
 
+bool adminLogin()
+{
+    cout << "\n\n\n\n\t\t\tEnter Your CNIC Number:  ";
+    string str, str2;
+    str = Utility::getCnic();
+    ifstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\AdminData.txt");
+    if (file.is_open())
+    {
+        while (!file.eof())
+        {
+            getline(file, str2);
+            if (str == str2)
+            {
+                cout << "\nLogin successfully";
+                file.close();
+                return true;
+            }
+        }
+    }
+    else
+    {
+        cout << "Error opening file. Customer data not saved." << endl;
+    }
+    file.close();
+    return false;
+}
+
+void adminRegister()
+{
+    cout << "\nEnter Your CNIC Number:  ";
+    string str;
+
+    str = Utility::getCnic();
+    ofstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\AdminData.txt", ios::app);
+    if (file.is_open())
+    {
+        file << str << endl;
+        cout << "\nRegister successfully";
+        file.close();
+        return;
+    }
+    else
+    {
+        cout << "Error opening file. Customer data not saved." << endl;
+    }
+    file.close();
+    return;
+}
+
 int main()
 {
+    //  system("Color 0A");
     system("cls");
-    MovieTicketBookingSystem bookingSystem;
+    BookingSystem bookingSystem;
     int choice, num;
     string customerID;
 
@@ -454,59 +710,76 @@ int main()
     cout << "                -------------------------------------------------------------"
          << "\n\n\n";
 
-    cout << "\n\n             1. Login as an admin" << endl;
+    cout << "\n\n             1. Login as a admin" << endl;
     cout << "             0. Login as a customer" << endl;
     cout << "\n             Enter your choice: ";
-    cin >> num;
+    num = Utility::checknum(1);
     system("cls");
 
     if (num)
     {
-        // Admin Section
+        if (!adminLogin())
+        {
+            char ch;
+            cout << "\nLogin Faild\n\n";
+            cout << "You want to Register: (y/n):  ";
+            ch = Utility::checkYN();
+
+            if (ch == 'y' || ch == 'Y')
+            {
+                adminRegister();
+            }
+            else
+            {
+                main();
+            }
+            cout << endl;
+        }
         do
         {
+
             cout << "\n\n             1. Add a New Movie" << endl;
             cout << "             2. Delete a Movie" << endl;
             cout << "             3. View Your Movies List" << endl;
             cout << "             4. Exit\n\n";
             cout << "Enter your choice: ";
-            cin >> choice;
+            choice = Utility::checknum(4);
             system("cls");
 
             switch (choice)
             {
             case 1:
             {
-                string title, description, timings;
+                string Name, description, Time;
                 double price;
                 int availableSeats;
 
-                cout << "\n\t\tEnter the movie title         : ";
-                cin.ignore();
-                getline(cin, title);
+                cout << "\n\t\tEnter the movie Name                      : ";
+                // cin.ignore();
+                Name = Utility::checkChar();
 
-                cout << "\t\tEnter the movie description   : ";
-                getline(cin, description);
+                cout << "\n\t\tEnter the movie description               : ";
+                description = Utility::checkChar();
 
-                cout << "\t\tEnter the movie timings       : ";
-                getline(cin, timings);
+                cout << "\n\t\tEnter the Date, in this format (DD/MM)    : ";
+                Time = Utility::getdata();
 
-                cout << "\t\tEnter the ticket price        : ";
-                cin >> price;
+                cout << "\n\t\tEnter the ticket price                    : ";
+                price = Utility::getprice();
 
-                cout << "\t\tEnter the available seats     : ";
-                cin >> availableSeats;
-
-                bookingSystem.addMovie(title, description, timings, price, availableSeats);
+                cout << "\n\t\tEnter the available seats                 : ";
+                availableSeats = Utility::getprice();
+                cout << endl;
+                bookingSystem.addMovie(Name, description, Time, price, availableSeats);
                 break;
             }
             case 2:
             {
-                string title;
-                cout << "\n\t\tEnter the movie title to delete: ";
-                cin.ignore();
-                getline(cin, title);
-                bookingSystem.deleteMovie(title);
+                string Name;
+                cout << "\n\t\tEnter the movie Name to delete: ";
+
+                Name = Utility::checkChar();
+                bookingSystem.deleteMovie(Name);
                 break;
             }
             case 3:
@@ -538,34 +811,34 @@ int main()
         {
             cout << "\n\n             1. Book a Ticket" << endl;
             cout << "             2. View your Bookings" << endl;
-            cout << "             3. Movie Timings" << endl;
+            cout << "             3. View Movie Time" << endl;
             cout << "             4. Price for Tickets" << endl;
             cout << "             5. Check Available Seats" << endl;
             cout << "             6. Show Movies List" << endl;
             cout << "             7. Exit\n\n";
             cout << "Enter your choice: ";
-            cin >> choice;
+            choice = Utility::checknum(7);
             system("cls");
 
             switch (choice)
             {
             case 1:
             {
-                string movieTitle;
+                string movieName;
                 int numSeats;
                 cout << "\n          Select a movie to book a ticket:" << endl;
                 bookingSystem.showMovieList();
 
-                cout << "Enter the movie title                          : ";
-                cin.ignore();
-                getline(cin, movieTitle);
+                cout << "Enter the movie Name                          : ";
+                movieName = Utility::checkChar();
 
-                cout << "Enter the number of seats you want to book     : ";
-                cin >> numSeats;
+                cout << "\nEnter the number of seats you want to book     : ";
+                numSeats = Utility::getprice();
+                cout << endl;
 
-                if (bookingSystem.bookTicket(movieTitle, numSeats, customerID))
+                if (bookingSystem.bookTicket(movieName, numSeats, customerID))
                 {
-                    cout << numSeats << " ticket(s) booked successfully!" << endl;
+                    cout <<"\n"<< numSeats << " ticket(s) booked successfully!" << endl;
                 }
                 // else
                 // {
@@ -580,7 +853,7 @@ int main()
             }
             case 3:
             {
-                bookingSystem.showMovieTimings();
+                bookingSystem.showMovieTime();
                 break;
             }
             case 4:
@@ -610,12 +883,7 @@ int main()
             }
             }
         } while (true);
-
-
-        
     }
 
     return 0;
 }
-
-
