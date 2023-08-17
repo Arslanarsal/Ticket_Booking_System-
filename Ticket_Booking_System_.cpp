@@ -232,7 +232,7 @@ public:
 };
 
 const int MAX_MOVIES = 10;
-const string FILENAME = "C:\\Users\\Arslan\\Desktop\\Dev c++\\movies.txt";
+const string FILENAME = "C:\\Users\\Arslan\\Desktop\\git Projects\\Oop Project Ticket Booking System\\movies.txt";
 
 class Seats
 {
@@ -501,7 +501,7 @@ public:
 
     void viewBookings(const string &customerID)
     {
-        ifstream inputFile("C:\\Users\\Arslan\\Desktop\\Dev c++\\Data.txt");
+        ifstream inputFile("C:\\Users\\Arslan\\Desktop\\git Projects\\Oop Project Ticket Booking System\\Data.txt");
         if (inputFile.is_open())
         {
             string id, Name, price, seats, movieTime, bookingTime;
@@ -621,7 +621,7 @@ public:
 
     void saveCustomerData(const CustomerData &customerData)
     {
-        ofstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\Data.txt", ios::app);
+        ofstream file("C:\\Users\\Arslan\\Desktop\\git Projects\\Oop Project Ticket Booking System\\Data.txt", ios::app);
         if (file.is_open())
         {
             file << customerData.getID() << endl;
@@ -651,7 +651,7 @@ bool adminLogin()
     cout << "\n\n\n\n\t\t\tEnter Your CNIC Number:  ";
     string str, str2;
     str = Utility::getCnic();
-    ifstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\AdminData.txt");
+    ifstream file("C:\\Users\\Arslan\\Desktop\\git Projects\\Oop Project Ticket Booking System\\AdminData.txt");
     if (file.is_open())
     {
         while (!file.eof())
@@ -679,7 +679,7 @@ void adminRegister()
     string str;
 
     str = Utility::getCnic();
-    ofstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\AdminData.txt", ios::app);
+    ofstream file("C:\\Users\\Arslan\\Desktop\\git Projects\\Oop Project Ticket Booking System\\AdminData.txt", ios::app);
     if (file.is_open())
     {
         file << str << endl;
