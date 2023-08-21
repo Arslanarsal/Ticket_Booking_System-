@@ -232,7 +232,7 @@ public:
 };
 
 const int MAX_MOVIES = 10;
-const string FILENAME = "C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\movies.txt";
+const string FILENAME = "movies.txt";
 
 class Seats
 {
@@ -501,7 +501,8 @@ public:
 
     void viewBookings(const string &customerID)
     {
-        ifstream inputFile("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\Data.txt");
+        ifstream inputFile("Data.txt");
+
         if (inputFile.is_open())
         {
             string id, Name, price, seats, movieTime, bookingTime;
@@ -621,7 +622,7 @@ public:
 
     void saveCustomerData(const CustomerData &customerData)
     {
-        ofstream file("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\Data.txt", ios::app);
+        ofstream file("Data.txt", ios::app);
         if (file.is_open())
         {
             file << customerData.getID() << endl;
@@ -651,7 +652,7 @@ bool adminLogin()
     cout << "\n\n\n\n\t\t\tEnter Your CNIC Number:  ";
     string str, str2;
     str = Utility::getCnic();
-    ifstream file("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\AdminData.txt");
+    ifstream file("AdminData.txt");
     if (file.is_open())
     {
         while (!file.eof())
@@ -679,7 +680,7 @@ void adminRegister()
     string str;
 
     str = Utility::getCnic();
-    ofstream file("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\AdminData.txt", ios::app);
+    ofstream file("AdminData.txt", ios::app);
     if (file.is_open())
     {
         file << str << endl;
