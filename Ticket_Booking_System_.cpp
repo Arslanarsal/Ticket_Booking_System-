@@ -62,10 +62,10 @@ public:
 
     static double getprice()
     {
-        char ch[14];
+        char ch[5];
         char temp;
         int i = 0;
-        while (i < 13)
+        while (i < 5)
         {
             temp = getch();
             if (temp >= '0' && temp <= '9')
@@ -232,7 +232,7 @@ public:
 };
 
 const int MAX_MOVIES = 10;
-const string FILENAME = "C:\\Users\\Arslan\\Desktop\\Dev c++\\movies.txt";
+const string FILENAME = "C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\movies.txt";
 
 class Seats
 {
@@ -501,7 +501,7 @@ public:
 
     void viewBookings(const string &customerID)
     {
-        ifstream inputFile("C:\\Users\\Arslan\\Desktop\\Dev c++\\Data.txt");
+        ifstream inputFile("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\Data.txt");
         if (inputFile.is_open())
         {
             string id, Name, price, seats, movieTime, bookingTime;
@@ -521,11 +521,11 @@ public:
                     getline(inputFile, bookingTime);
 
                     cout << "\n\n          MOVIE TICKET\n" << endl;
-                    cout << "    Movie Name      : " << Name << endl;
-                    cout << "    No of Seats     : " << seats << endl;
-                    cout << "    Price           : $" << price << endl;
-                    cout << "    Movie Timing    : " << movieTime << endl;
-                    cout << "    Issue Date      : " << bookingTime << endl;
+                    cout << "    Movie Name           : " << Name << endl;
+                    cout << "    No of Seats          : " << seats << endl;
+                    cout << "    Price per Ticket     : $" << price << endl;
+                    cout << "    Movie Timing         : " << movieTime << endl;
+                    cout << "    Issue Date           : " << bookingTime << endl;
                 }
             }
 
@@ -621,7 +621,7 @@ public:
 
     void saveCustomerData(const CustomerData &customerData)
     {
-        ofstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\Data.txt", ios::app);
+        ofstream file("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\Data.txt", ios::app);
         if (file.is_open())
         {
             file << customerData.getID() << endl;
@@ -651,7 +651,7 @@ bool adminLogin()
     cout << "\n\n\n\n\t\t\tEnter Your CNIC Number:  ";
     string str, str2;
     str = Utility::getCnic();
-    ifstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\AdminData.txt");
+    ifstream file("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\AdminData.txt");
     if (file.is_open())
     {
         while (!file.eof())
@@ -679,7 +679,7 @@ void adminRegister()
     string str;
 
     str = Utility::getCnic();
-    ofstream file("C:\\Users\\Arslan\\Desktop\\Dev c++\\AdminData.txt", ios::app);
+    ofstream file("C:\\Users\\arsla\\OneDrive\\Desktop\\Projects\\Ticket_Booking_System-\\AdminData.txt", ios::app);
     if (file.is_open())
     {
         file << str << endl;
@@ -811,7 +811,7 @@ int main()
         {
             cout << "\n\n             1. Book a Ticket" << endl;
             cout << "             2. View your Bookings" << endl;
-            cout << "             3. View Movie Time" << endl;
+            cout << "             3. View Movie Date" << endl;
             cout << "             4. Price for Tickets" << endl;
             cout << "             5. Check Available Seats" << endl;
             cout << "             6. Show Movies List" << endl;
